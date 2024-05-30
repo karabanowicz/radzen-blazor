@@ -681,10 +681,10 @@
             {
                 if (typeof(TItem) == typeof(object))
                 {
-                    var firstItem = view.FirstOrDefault();
-                    if (firstItem != null)
+                    var firstItemType = view.GetType().GetGenericArguments().FirstOrDefault();
+                    if (firstItemType != null)
                     {
-                        view = view.Cast(firstItem.GetType()).AsQueryable().OrderBy(orderBy).Cast<TItem>();
+                        view = view.Cast(firstItemType).AsQueryable().OrderBy(orderBy).Cast<TItem>();
                     }
                 }
                 else

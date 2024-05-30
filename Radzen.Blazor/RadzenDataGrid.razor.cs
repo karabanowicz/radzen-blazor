@@ -657,8 +657,7 @@ namespace Radzen.Blazor
 
             if (AllowColumnPicking)
             {
-                selectedColumns = allColumns.Where(c => c.Pickable && c.GetVisible()).ToList();
-                allPickableColumns = allColumns.Where(c => c.Pickable).ToList();
+                UpdatePickableColumns();
             }
 
             UpdateColumnsOrder();
@@ -699,12 +698,13 @@ namespace Radzen.Blazor
 			{
 				if (AllowColumnPicking)
 				{
+                    selectedColumns = allColumns.Where(c => c.Pickable && c.GetVisible()).ToList();
 					allPickableColumns = allColumns.Where(c => c.Pickable).OrderBy(c => c.GetOrderIndex()).ToList();
 				}
 			}
 		}
 
-		internal void RemoveColumn(RadzenDataGridColumn<TItem> column)
+        internal void RemoveColumn(RadzenDataGridColumn<TItem> column)
         {
             if (columns.Contains(column))
             {
@@ -1651,10 +1651,10 @@ namespace Radzen.Blazor
             {
                 if (typeof(TItem) == typeof(object))
                 {
-                    var firstItem = view.FirstOrDefault();
+                    var firstItem = view.GetType().GetGenericArguments().FirstOrDefault();
                     if (firstItem != null)
                     {
-                        view = view.Cast(firstItem.GetType()).AsQueryable().OrderBy(orderBy).Cast<TItem>();
+                        view = view.Cast(firstItem).AsQueryable().OrderBy(orderBy).Cast<TItem>();
                     }
                 }
                 else
@@ -1737,10 +1737,10 @@ namespace Radzen.Blazor
                     {
                         if (typeof(TItem) == typeof(object))
                         {
-                            var firstItem = view.FirstOrDefault();
-                            if (firstItem != null)
+                            var firstItemType = view.GetType().GetGenericArguments().FirstOrDefault();
+                            if (firstItemType != null)
                             {
-                                view = view.Cast(firstItem.GetType()).AsQueryable().OrderBy(orderBy).Cast<TItem>();
+                                view = view.Cast(firstItemType).AsQueryable().OrderBy(orderBy).Cast<TItem>();
                             }
                         }
                         else

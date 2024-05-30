@@ -862,11 +862,12 @@ window.Radzen = {
       }
     };
     uploadComponent.invokeMethodAsync('GetHeaders').then(function (headers) {
-      xhr.open('POST', url, true);
+      xhr.open('PUT', url, true);
       for (var name in headers) {
         xhr.setRequestHeader(name, headers[name]);
-      }
-      xhr.send(data);
+        }
+        xhr.setRequestHeader("Content-Range", "bytes 0-" + (file.size - 1) + "/" + file.size)
+      xhr.send(file);
     });
   },
   getCookie: function (name) {

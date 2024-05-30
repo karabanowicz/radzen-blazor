@@ -41,6 +41,10 @@ namespace Radzen
 
         private async ValueTask<Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderResult<object>> LoadItems(Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderRequest request)
         {
+            if(request.Count==0)
+            {
+                return new Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderResult<object>(new List<object>(){},PageSize);
+            }
             var data = Data != null ? Data.Cast<object>() : Enumerable.Empty<object>();
             var view = (LoadData.HasDelegate ? data : View).Cast<object>().AsQueryable();
             var totalItemsCount = LoadData.HasDelegate ? Count : view.Count();

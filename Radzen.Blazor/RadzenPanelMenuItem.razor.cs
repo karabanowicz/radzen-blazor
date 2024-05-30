@@ -46,6 +46,9 @@ namespace Radzen.Blazor
         /// <value>The text.</value>
         [Parameter]
         public string Text { get; set; }
+        
+        [Parameter]
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets the value.
